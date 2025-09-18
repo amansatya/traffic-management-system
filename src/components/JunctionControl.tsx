@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import ApproachLane from './ApproachLane';
 
 interface JunctionControlProps {
@@ -8,6 +9,8 @@ interface JunctionControlProps {
 }
 
 const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProps) => {
+  const [expandedLane, setExpandedLane] = useState<string | null>(null);
+  const [autoApply, setAutoApply] = useState(true);
   const [approachData, setApproachData] = useState({
     north: {
       direction: 'North',
@@ -39,7 +42,7 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
     }
   });
 
-  // Simulate real-time data updates
+  // Simulate real-time data updates every minute
   useEffect(() => {
     const interval = setInterval(() => {
       setApproachData(prev => ({
@@ -89,7 +92,7 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
           aiRecommendation: Math.floor(Math.random() * 45) + 15
         }
       }));
-    }, 3000);
+    }, 60000); // Changed to 1 minute (60000ms)
 
     return () => clearInterval(interval);
   }, []);
@@ -114,6 +117,35 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
     }));
   };
 
+  const applyTimings = () => {
+    // Logic to apply AI recommendations to actual traffic lights
+    console.log('Applying AI recommendations to traffic lights');
+  };
+
+  if (expandedLane) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">
+            {expandedLane.charAt(0).toUpperCase() + expandedLane.slice(1)}bound Approach - Detailed View
+          </h2>
+          <Button onClick={() => setExpandedLane(null)} variant="outline" size="sm">
+            <span className="mr-2">✕</span>
+            Close
+          </Button>
+        </div>
+        <div className="max-w-2xl mx-auto">
+          <ApproachLane
+            {...approachData[expandedLane as keyof typeof approachData]}
+            onManualOverride={(override) => handleManualOverride(expandedLane, override)}
+            onForceLight={(status) => handleForceLight(expandedLane, status)}
+            expanded={true}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Junction Info */}
@@ -132,32 +164,65 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
       {/* 2x2 Grid Layout */}
       <div className="grid grid-cols-2 gap-6">
         {/* Northwest - North Approach */}
-        <ApproachLane
-          {...approachData.north}
-          onManualOverride={(override) => handleManualOverride('north', override)}
-          onForceLight={(status) => handleForceLight('north', status)}
-        />
+        <div onClick={() => setExpandedLane('north')} className="cursor-pointer">
+          <ApproachLane
+            {...approachData.north}
+            onManualOverride={(override) => handleManualOverride('north', override)}
+            onForceLight={(status) => handleForceLight('north', status)}
+            onExpand={() => setExpandedLane('north')}
+          />
+        </div>
 
         {/* Northeast - East Approach */}
-        <ApproachLane
-          {...approachData.east}
-          onManualOverride={(override) => handleManualOverride('east', override)}
-          onForceLight={(status) => handleForceLight('east', status)}
-        />
+        <div onClick={() => setExpandedLane('east')} className="cursor-pointer">
+          <ApproachLane
+            {...approachData.east}
+            onManualOverride={(override) => handleManualOverride('east', override)}
+            onForceLight={(status) => handleForceLight('east', status)}
+            onExpand={() => setExpandedLane('east')}
+          />
+        </div>
 
         {/* Southwest - South Approach */}
-        <ApproachLane
-          {...approachData.south}
-          onManualOverride={(override) => handleManualOverride('south', override)}
-          onForceLight={(status) => handleForceLight('south', status)}
-        />
+        <div onClick={() => setExpandedLane('south')} className="cursor-pointer">
+          <ApproachLane
+            {...approachData.south}
+            onManualOverride={(override) => handleManualOverride('south', override)}
+            onForceLight={(status) => handleForceLight('south', status)}
+            onExpand={() => setExpandedLane('south')}
+          />
+        </div>
 
         {/* Southeast - West Approach */}
-        <ApproachLane
-          {...approachData.west}
-          onManualOverride={(override) => handleManualOverride('west', override)}
-          onForceLight={(status) => handleForceLight('west', status)}
-        />
+        <div onClick={() => setExpandedLane('west')} className="cursor-pointer">
+          <ApproachLane
+            {...approachData.west}
+            onManualOverride={(override) => handleManualOverride('west', override)}
+            onForceLight={(status) => handleForceLight('west', status)}
+            onExpand={() => setExpandedLane('west')}
+          />
+        </div>
+      </div>
+
+      {/* Auto Apply Controls */}
+      <div className="flex items-center justify-center space-x-4 mt-8">
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="autoApply"
+            checked={autoApply}
+            onChange={(e) => setAutoApply(e.target.checked)}
+            className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+          />
+          <label htmlFor="autoApply" className="text-sm font-medium">
+            Auto Apply AI Recommendations
+          </label>
+        </div>
+        {!autoApply && (
+          <Button onClick={applyTimings} className="bg-primary hover:bg-primary/80">
+            Apply Timings
+          </Button>
+        )}
       </div>
     </div>
   );

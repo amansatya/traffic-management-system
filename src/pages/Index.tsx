@@ -6,11 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import JunctionControl from '@/components/JunctionControl';
 import SystemAnalytics from '@/components/SystemAnalytics';
 import EmergencyAlert from '@/components/EmergencyAlert';
+import NotificationModal from '@/components/NotificationModal';
+import SettingsModal from '@/components/SettingsModal';
+import ProfileDropdown from '@/components/ProfileDropdown';
 
 const Index = () => {
   const [activeView, setActiveView] = useState<'junction' | 'analytics'>('junction');
   const [selectedJunction, setSelectedJunction] = useState('main-park');
   const [emergencyActive, setEmergencyActive] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -47,18 +52,25 @@ const Index = () => {
               System Online
             </Badge>
             
-            <Button variant="ghost" size="sm" className="relative">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="relative"
+              onClick={() => setNotificationOpen(true)}
+            >
               <Bell className="h-5 w-5" />
               <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-status-warning animate-pulse" />
             </Button>
             
-            <Button variant="ghost" size="sm">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setSettingsOpen(true)}
+            >
               <Settings className="h-5 w-5" />
             </Button>
             
-            <Button variant="ghost" size="sm">
-              <User className="h-5 w-5" />
-            </Button>
+            <ProfileDropdown />
           </div>
         </div>
 
@@ -107,6 +119,17 @@ const Index = () => {
         vehicleType="ambulance"
         approach="Northbound"
         junction="Main St. & Park Ave."
+      />
+
+      {/* Modals */}
+      <NotificationModal
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+      />
+      
+      <SettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
       />
 
       {/* Simulate Emergency for Demo */}

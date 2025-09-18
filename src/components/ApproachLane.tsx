@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Car, Truck, Bus, Bike, Circle, Square, Play, Pause } from 'lucide-react';
 import VideoPlayer from './VideoPlayer';
+import TrafficLight3D from './TrafficLight3D';
 
 interface ApproachLaneProps {
   direction: string;
@@ -21,6 +22,8 @@ interface ApproachLaneProps {
   manualOverride: boolean;
   onManualOverride: (override: boolean) => void;
   onForceLight: (status: 'red' | 'green') => void;
+  onExpand?: () => void;
+  expanded?: boolean;
 }
 
 const ApproachLane = ({
@@ -30,7 +33,9 @@ const ApproachLane = ({
   aiRecommendation,
   manualOverride,
   onManualOverride,
-  onForceLight
+  onForceLight,
+  onExpand,
+  expanded = false
 }: ApproachLaneProps) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -48,7 +53,7 @@ const ApproachLane = ({
   };
 
   return (
-    <Card className="bg-card/95 backdrop-blur-sm border-border/50 shadow-lg">
+    <Card className="bg-card/95 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-xl transition-shadow">
       {/* Header */}
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between text-lg">
@@ -63,6 +68,13 @@ const ApproachLane = ({
       </CardHeader>
 
       <CardContent className="space-y-4">
+        {/* 3D Traffic Light */}
+        {expanded && (
+          <div className="mb-4">
+            <TrafficLight3D status={lightStatus} />
+          </div>
+        )}
+        
         {/* Video Feed */}
         <div className="relative">
           <VideoPlayer
