@@ -1,96 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Smart Traffic Management System Design System - Professional Dark Theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark theme optimized for control room environments */
+    --background: 217 19% 8%;
+    --foreground: 217 19% 92%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Control panel surfaces */
+    --card: 217 19% 12%;
+    --card-foreground: 217 19% 92%;
+    
+    --popover: 217 19% 12%;
+    --popover-foreground: 217 19% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Primary accent - Electric Blue for interactive elements */
+    --primary: 205 95% 55%;
+    --primary-foreground: 217 19% 8%;
+    
+    /* Secondary surfaces */
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 217 19% 85%;
+    
+    /* Muted backgrounds and text */
+    --muted: 217 19% 10%;
+    --muted-foreground: 217 10% 60%;
+    
+    /* Accent highlights */
+    --accent: 217 19% 15%;
+    --accent-foreground: 217 19% 85%;
+    
+    /* Destructive/Alert colors */
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 217 19% 92%;
+    
+    /* Borders and inputs */
+    --border: 217 19% 20%;
+    --input: 217 19% 15%;
+    --ring: 205 95% 55%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Traffic light status colors */
+    --traffic-green: 142 76% 36%;
+    --traffic-yellow: 48 96% 53%;
+    --traffic-red: 0 75% 60%;
+    
+    /* System status colors */
+    --status-online: 142 76% 36%;
+    --status-warning: 48 96% 53%;
+    --status-critical: 0 75% 60%;
+    
+    /* Data visualization colors */
+    --chart-primary: 205 95% 55%;
+    --chart-secondary: 142 76% 36%;
+    --chart-tertiary: 48 96% 53%;
+    
+    /* Gradients for tech aesthetic */
+    --gradient-primary: linear-gradient(135deg, hsl(205 95% 55%), hsl(217 91% 60%));
+    --gradient-surface: linear-gradient(135deg, hsl(217 19% 12%), hsl(217 19% 10%));
+    --gradient-glow: linear-gradient(135deg, hsl(205 95% 55% / 0.1), hsl(217 91% 60% / 0.1));
+    
+    /* Shadows and glows */
+    --shadow-glow: 0 0 20px hsl(205 95% 55% / 0.3);
+    --shadow-card: 0 4px 20px hsl(217 19% 4% / 0.5);
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.75rem;
   }
 }
 
@@ -100,6 +78,78 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Traffic light status indicators */
+  .status-green {
+    @apply bg-green-500/20 text-green-400 border-green-500/30;
+  }
+  
+  .status-yellow {
+    @apply bg-yellow-500/20 text-yellow-400 border-yellow-500/30;
+  }
+  
+  .status-red {
+    @apply bg-red-500/20 text-red-400 border-red-500/30;
+  }
+  
+  /* Glowing effects for critical elements */
+  .glow-primary {
+    @apply shadow-lg;
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .glow-critical {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px hsl(var(--status-critical) / 0.4);
+  }
+  
+  /* Animated pulse for emergency states */
+  .pulse-critical {
+    animation: pulse-red 2s infinite;
+  }
+  
+  @keyframes pulse-red {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(var(--status-critical) / 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px hsl(var(--status-critical) / 0);
+    }
+  }
+  
+  /* Video feed container styles */
+  .video-container {
+    @apply relative overflow-hidden rounded-lg bg-muted/50;
+    aspect-ratio: 16 / 9;
+  }
+  
+  /* Detection overlay styles */
+  .detection-box {
+    @apply absolute border-2 border-primary/70 bg-primary/10 backdrop-blur-sm;
+    border-radius: 4px;
+  }
+  
+  .detection-label {
+    @apply absolute -top-6 left-0 bg-primary/90 text-primary-foreground text-xs px-2 py-1 rounded-t;
+  }
+}
+
+@layer utilities {
+  /* Custom gradient backgrounds */
+  .bg-gradient-surface {
+    background: var(--gradient-surface);
+  }
+  
+  .bg-gradient-glow {
+    background: var(--gradient-glow);
+  }
+  
+  /* Font weights for data display */
+  .font-mono-data {
+    @apply font-mono font-medium tracking-wider;
   }
 }

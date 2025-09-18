@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +60,16 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        /* Traffic management system colors */
+        'traffic-green': "hsl(var(--traffic-green))",
+        'traffic-yellow': "hsl(var(--traffic-yellow))",
+        'traffic-red': "hsl(var(--traffic-red))",
+        'status-online': "hsl(var(--status-online))",
+        'status-warning': "hsl(var(--status-warning))",
+        'status-critical': "hsl(var(--status-critical))",
+        'chart-primary': "hsl(var(--chart-primary))",
+        'chart-secondary': "hsl(var(--chart-secondary))",
+        'chart-tertiary': "hsl(var(--chart-tertiary))",
       },
       borderRadius: {
         lg: "var(--radius)",
