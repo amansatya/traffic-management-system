@@ -28,7 +28,7 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
     },
     east: {
       direction: 'East',
-      lightStatus: 'green' as 'red' | 'yellow' | 'green',
+      lightStatus: 'red' as 'red' | 'yellow' | 'green',
       vehicles: { total: 4, cars: 3, trucks: 0, buses: 0, motorcycles: 1 },
       aiRecommendation: 18,
       manualOverride: false
@@ -75,7 +75,7 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
             total: Math.floor(Math.random() * 15) + 2,
             cars: Math.floor(Math.random() * 12) + 1,
             trucks: Math.floor(Math.random() * 2),
-            buses: Math.floor(Math.random() * 1),
+            buses: Math.floor(Math.random()),
             motorcycles: Math.floor(Math.random() * 2)
           },
           aiRecommendation: Math.floor(Math.random() * 30) + 10
@@ -86,7 +86,7 @@ const JunctionControl = ({ junctionId, onEmergencyTrigger }: JunctionControlProp
             total: Math.floor(Math.random() * 20) + 6,
             cars: Math.floor(Math.random() * 15) + 4,
             trucks: Math.floor(Math.random() * 3),
-            buses: Math.floor(Math.random() * 1),
+            buses: Math.floor(Math.random()),
             motorcycles: Math.floor(Math.random() * 2)
           },
           aiRecommendation: Math.floor(Math.random() * 45) + 15

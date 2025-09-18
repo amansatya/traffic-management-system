@@ -1,180 +1,282 @@
-import { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Ambulance, Truck, Shield, Siren, CheckCircle, Clock, MapPin, AlertTriangle } from 'lucide-react';
+import {
+    Ambulance,
+    Truck,
+    Shield,
+    Siren,
+    CheckCircle,
+    Clock,
+    MapPin,
+    AlertTriangle,
+    X,
+} from 'lucide-react';
 
 interface EmergencyAlertProps {
-  isOpen: boolean;
-  onClose: () => void;
-  vehicleType: 'ambulance' | 'fire' | 'police';
-  approach: string;
-  junction: string;
+    isOpen: boolean;
+    onClose: () => void;
+    vehicleType: 'ambulance' | 'fire' | 'police';
+    approach: string;
+    junction: string;
 }
 
-const EmergencyAlert = ({ isOpen, onClose, vehicleType, approach, junction }: EmergencyAlertProps) => {
-  const [countdown, setCountdown] = useState(15);
-  const [protocolActive, setProtocolActive] = useState(false);
+const EmergencyAlert = ({
+                            isOpen,
+                            onClose,
+                            vehicleType,
+                            approach,
+                            junction,
+                        }: EmergencyAlertProps) => {
+    const [countdown, setCountdown] = useState(30);
+    const [protocolActive, setProtocolActive] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      setCountdown(15);
-      setProtocolActive(false);
-      
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            setProtocolActive(true);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const autoCloseRef = useRef<NodeJS.Timeout | null>(null);
 
-      return () => clearInterval(timer);
-    }
-  }, [isOpen]);
+    const handleClose = useCallback(() => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        if (autoCloseRef.current) clearTimeout(autoCloseRef.current);
+        onClose();
+    }, [onClose]);
 
-  const getVehicleIcon = () => {
-    switch (vehicleType) {
-      case 'ambulance': return <Ambulance className="h-12 w-12 text-white" />;
-      case 'fire': return <Truck className="h-12 w-12 text-white" />;
-      case 'police': return <Shield className="h-12 w-12 text-white" />;
-      default: return <Ambulance className="h-12 w-12 text-white" />;
-    }
-  };
+    useEffect(() => {
+        if (!isOpen) return;
 
-  const getVehicleLabel = () => {
-    switch (vehicleType) {
-      case 'ambulance': return 'AMBULANCE';
-      case 'fire': return 'FIRE TRUCK';
-      case 'police': return 'POLICE VEHICLE';
-      default: return 'EMERGENCY VEHICLE';
-    }
-  };
+        setCountdown(30);
+        setProtocolActive(false);
 
-  return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent 
-        className="max-w-2xl bg-card border-4 border-status-critical pulse-critical"
-      >
-        <DialogHeader className="text-center space-y-4">
-          {/* Emergency Icon */}
-          <div className="mx-auto w-24 h-24 rounded-full bg-status-critical flex items-center justify-center animate-pulse">
-            {getVehicleIcon()}
-          </div>
+        timerRef.current = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev <= 1) {
+                    setProtocolActive(true);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
 
-          {/* Alert Title */}
-          <DialogTitle className="text-3xl font-bold text-status-critical flex items-center justify-center space-x-3">
-            <Siren className="h-8 w-8 animate-pulse" />
-            <span>EMERGENCY VEHICLE DETECTED</span>
-            <Siren className="h-8 w-8 animate-pulse" />
-          </DialogTitle>
-        </DialogHeader>
+        autoCloseRef.current = setTimeout(() => {
+            handleClose();
+        }, 30000);
 
-        <div className="space-y-6">
-          {/* Vehicle Information */}
-          <div className="text-center space-y-2">
-            <Badge className="bg-status-critical/20 text-status-critical border-status-critical text-lg px-4 py-2">
-              {getVehicleLabel()}
-            </Badge>
-            <div className="text-lg text-foreground">
-              <strong>Approaching:</strong> {junction}
-            </div>
-            <div className="text-lg text-foreground">
-              <strong>Direction:</strong> {approach}
-            </div>
-          </div>
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+            if (autoCloseRef.current) clearTimeout(autoCloseRef.current);
+        };
+    }, [isOpen, handleClose]);
 
-          <Separator className="bg-border" />
+    const getVehicleIcon = () => {
+        switch (vehicleType) {
+            case 'ambulance':
+                return <Ambulance className="h-12 w-12 text-white" />;
+            case 'fire':
+                return <Truck className="h-12 w-12 text-white" />;
+            case 'police':
+                return <Shield className="h-12 w-12 text-white" />;
+            default:
+                return <Ambulance className="h-12 w-12 text-white" />;
+        }
+    };
 
-          {/* Protocol Status */}
-          <div className="space-y-4">
-            <div className="text-center">
-              {!protocolActive ? (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <Clock className="h-5 w-5 text-status-warning animate-pulse" />
-                    <span className="text-lg text-status-warning">
-                      Activating Green Corridor Protocol in
-                    </span>
-                  </div>
-                  <div className="text-4xl font-bold text-status-warning glow-primary">
-                    {countdown}s
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <CheckCircle className="h-6 w-6 text-status-online animate-pulse" />
-                    <span className="text-lg text-status-online font-semibold">
-                      GREEN CORRIDOR PROTOCOL ACTIVE
-                    </span>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    All lights along the emergency route have been coordinated
-                  </div>
-                </div>
-              )}
-            </div>
+    const getVehicleLabel = () => {
+        switch (vehicleType) {
+            case 'ambulance':
+                return 'AMBULANCE';
+            case 'fire':
+                return 'FIRE TRUCK';
+            case 'police':
+                return 'POLICE VEHICLE';
+            default:
+                return 'EMERGENCY VEHICLE';
+        }
+    };
 
-            {/* Route Information */}
-            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>Emergency Route Status</span>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span>Current Junction</span>
-                    <Badge className="status-green">Clear</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Next Junction</span>
-                    <Badge className="status-yellow">Clearing</Badge>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span>ETA to Clear</span>
-                    <span className="font-mono-data">45s</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Route Length</span>
-                    <span className="font-mono-data">1.2km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+    const handleOpenChange = (open: boolean) => {
+        if (!open) handleClose();
+    };
 
-            {/* Warning Notice */}
-            <div className="bg-status-warning/10 border border-status-warning/30 rounded-lg p-4">
-              <div className="flex items-center space-x-2 text-status-warning text-sm">
-                <AlertTriangle className="h-4 w-4" />
-                <span className="font-medium">
-                  Manual overrides are temporarily disabled during emergency protocol
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Button */}
-          <div className="flex justify-center space-x-4">
-            <Button
-              onClick={onClose}
-              className="bg-primary hover:bg-primary/80 text-primary-foreground px-8 py-3 text-lg"
-              disabled={!protocolActive}
+    return (
+        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+            <DialogContent
+                className="w-screen h-screen max-w-none max-h-none overflow-hidden bg-card border-4 border-status-critical pulse-critical p-0 m-0 rounded-none"
+                onPointerDownOutside={(e) => e.preventDefault()}
+                onEscapeKeyDown={(e) => e.preventDefault()}
             >
-              {protocolActive ? 'Acknowledge' : `Activating... ${countdown}s`}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
+                <div className="h-full overflow-y-auto custom-scrollbar">
+                    <DialogHeader className="text-center space-y-4 bg-card z-10 p-6 border-b border-status-critical/20 relative">
+                        <Button
+                            onClick={handleClose}
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-4 top-4 text-status-critical hover:bg-status-critical/20 hover:text-status-critical z-20 transition-colors duration-200"
+                        >
+                            <X className="h-6 w-6" />
+                        </Button>
+                        <div className="mx-auto w-24 h-24 rounded-full bg-status-critical flex items-center justify-center animate-pulse">
+                            {getVehicleIcon()}
+                        </div>
+                        <DialogTitle className="text-2xl md:text-3xl font-bold text-status-critical flex items-center justify-center space-x-3 flex-wrap">
+                            <Siren className="h-6 w-6 md:h-8 md:w-8 animate-pulse" />
+                            <span className="text-center">EMERGENCY VEHICLE DETECTED</span>
+                            <Siren className="h-6 w-6 md:h-8 md:w-8 animate-pulse" />
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6 p-6">
+                        <div className="text-center space-y-2">
+                            <Badge className="bg-status-critical/20 text-status-critical border-status-critical text-base md:text-lg px-4 py-2">
+                                {getVehicleLabel()}
+                            </Badge>
+                            <div className="text-base md:text-lg text-foreground">
+                                <strong>Approaching:</strong> {junction}
+                            </div>
+                            <div className="text-base md:text-lg text-foreground">
+                                <strong>Direction:</strong> {approach}
+                            </div>
+                        </div>
+                        <Separator className="bg-border" />
+                        <div className="space-y-4">
+                            <div className="text-center">
+                                {!protocolActive ? (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-center space-x-2 flex-wrap">
+                                            <Clock className="h-5 w-5 text-status-warning animate-pulse" />
+                                            <span className="text-base md:text-lg text-status-warning text-center">
+                        Activating Green Corridor Protocol in
+                      </span>
+                                        </div>
+                                        <div className="text-4xl md:text-5xl font-bold text-status-warning glow-primary">
+                                            {countdown}s
+                                        </div>
+                                        <div className="text-sm text-muted-foreground">
+                                            Modal will auto-close in {countdown} seconds
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-center space-x-2 flex-wrap">
+                                            <CheckCircle className="h-6 w-6 text-status-online animate-pulse" />
+                                            <span className="text-base md:text-lg text-status-online font-semibold text-center">
+                        GREEN CORRIDOR PROTOCOL ACTIVE
+                      </span>
+                                        </div>
+                                        <div className="text-sm text-muted-foreground">
+                                            All lights along the emergency route have been coordinated
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+                                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>Emergency Route Status</span>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <span>Current Junction</span>
+                                            <Badge className="status-green text-xs">Clear</Badge>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span>Next Junction</span>
+                                            <Badge className="status-yellow text-xs">Clearing</Badge>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <span>ETA to Clear</span>
+                                            <span className="font-mono-data">45s</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span>Route Length</span>
+                                            <span className="font-mono-data">1.2km</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-status-warning/10 border border-status-warning/30 rounded-lg p-4">
+                                <div className="flex items-start space-x-2 text-status-warning text-sm">
+                                    <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                                    <span className="font-medium">
+                    Manual overrides are temporarily disabled during emergency
+                    protocol
+                  </span>
+                                </div>
+                            </div>
+                            <div className="bg-muted/20 rounded-lg p-4 space-y-3">
+                                <h4 className="font-semibold text-sm text-foreground">
+                                    Emergency Protocol Steps:
+                                </h4>
+                                <div className="space-y-2 text-sm text-muted-foreground">
+                                    <div className="flex items-center space-x-2">
+                                        <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-status-warning animate-pulse'}`} />
+                                        <span>Traffic lights clearing emergency route</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-muted'}`} />
+                                        <span>Pedestrian signals secured</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-muted'}`} />
+                                        <span>Cross-traffic held</span>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-muted'}`} />
+                                        <span>Emergency vehicle path optimized</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex justify-center space-x-4 pb-6">
+                            <Button
+                                onClick={handleClose}
+                                className="bg-primary hover:bg-primary/80 text-primary-foreground px-6 md:px-8 py-2 md:py-3 text-base md:text-lg"
+                            >
+                                {protocolActive ? 'Acknowledge' : 'Close'}
+                            </Button>
+                            {!protocolActive && (
+                                <Button
+                                    onClick={handleClose}
+                                    variant="outline"
+                                    className="px-6 md:px-8 py-2 md:py-3 text-base md:text-lg border-status-critical text-status-critical hover:bg-status-critical/10"
+                                >
+                                    Cancel Protocol
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <style>{`
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 12px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+          }
+          .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #ef4444 rgba(255, 255, 255, 0.1);
+          }
+        `}</style>
+            </DialogContent>
+        </Dialog>
+    );
 };
 
 export default EmergencyAlert;
