@@ -84,57 +84,17 @@ const ApproachLane = ({
           />
         </div>
 
-        {/* Vehicle Count Data */}
-        <div className="space-y-3">
+        {/* Video Placeholder */}
+        <div className="space-y-2 p-4 bg-muted/20 rounded-lg border-2 border-dashed border-muted-foreground/30">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-medium text-muted-foreground">Real-time Metrics</h4>
-            <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <h4 className="text-sm font-medium text-muted-foreground">Video Feed Placeholder</h4>
+            <div className="h-2 w-2 rounded-full bg-primary" />
           </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Circle className="h-3 w-3 fill-current text-primary" />
-                  <span className="text-xs text-muted-foreground">Total</span>
-                </div>
-                <span className="font-mono-data text-sm text-foreground">{vehicles.total}</span>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Car className="h-3 w-3 text-chart-primary" />
-                  <span className="text-xs text-muted-foreground">Cars</span>
-                </div>
-                <span className="font-mono-data text-sm text-foreground">{vehicles.cars}</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Bike className="h-3 w-3 text-chart-tertiary" />
-                  <span className="text-xs text-muted-foreground">Motorcycles</span>
-                </div>
-                <span className="font-mono-data text-sm text-foreground">{vehicles.motorcycles}</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Truck className="h-3 w-3 text-chart-secondary" />
-                  <span className="text-xs text-muted-foreground">Trucks</span>
-                </div>
-                <span className="font-mono-data text-sm text-foreground">{vehicles.trucks}</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Bus className="h-3 w-3 text-status-warning" />
-                  <span className="text-xs text-muted-foreground">Buses</span>
-                </div>
-                <span className="font-mono-data text-sm text-foreground">{vehicles.buses}</span>
-              </div>
-            </div>
+          <div className="space-y-1">
+            <div className="h-2 bg-muted-foreground/20 rounded-full"></div>
+            <div className="h-2 bg-muted-foreground/15 rounded-full w-3/4"></div>
+            <div className="h-2 bg-muted-foreground/20 rounded-full w-1/2"></div>
+            <div className="h-2 bg-muted-foreground/15 rounded-full w-2/3"></div>
           </div>
         </div>
 
