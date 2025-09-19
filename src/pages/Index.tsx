@@ -10,7 +10,11 @@ import NotificationModal from '@/components/NotificationModal';
 import SettingsModal from '@/components/SettingsModal';
 import ProfileDropdown from '@/components/ProfileDropdown';
 
-const Index = () => {
+interface IndexProps {
+  onLogout?: () => void;
+}
+
+const Index = ({ onLogout }: IndexProps) => {
   const [activeView, setActiveView] = useState<'junction' | 'analytics'>('junction');
   const [selectedJunction, setSelectedJunction] = useState('main-park');
   const [emergencyActive, setEmergencyActive] = useState(false);
@@ -70,7 +74,7 @@ const Index = () => {
               <Settings className="h-5 w-5" />
             </Button>
             
-            <ProfileDropdown />
+            <ProfileDropdown onLogout={onLogout} />
           </div>
         </div>
 

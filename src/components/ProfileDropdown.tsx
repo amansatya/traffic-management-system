@@ -10,7 +10,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut, Shield, HelpCircle } from 'lucide-react';
 
-const ProfileDropdown = () => {
+interface ProfileDropdownProps {
+  onLogout?: () => void;
+}
+
+const ProfileDropdown = ({ onLogout }: ProfileDropdownProps) => {
   const [user] = useState({
     name: 'Traffic Controller',
     email: 'controller@traffic.city',
@@ -18,8 +22,9 @@ const ProfileDropdown = () => {
   });
 
   const handleLogout = () => {
-    // TODO: Implement logout functionality with Supabase
-    console.log('Logout clicked - implement with Supabase auth');
+    if (onLogout) {
+      onLogout();
+    }
   };
 
   return (
