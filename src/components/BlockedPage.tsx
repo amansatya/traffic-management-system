@@ -45,7 +45,7 @@ const BlockedPage = ({ onRetry }: BlockedPageProps) => {
             <div className="bg-muted/20 p-3 rounded">
               <p className="text-sm font-medium">System Administrator</p>
               <p className="text-xs text-muted-foreground">admin@trafficcontrol.city</p>
-              <p className="text-xs text-muted-foreground">+1 (555) 123-4567</p>
+              <p className="text-xs text-muted-foreground">+91 5871341862</p>
             </div>
           </div>
 
