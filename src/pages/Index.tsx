@@ -9,13 +9,30 @@ import EmergencyAlert from '@/components/EmergencyAlert';
 import NotificationModal from '@/components/NotificationModal';
 import SettingsModal from '@/components/SettingsModal';
 import ProfileDropdown from '@/components/ProfileDropdown';
+import ProfileModal from '@/components/ProfileModal';
 
-const Index = () => {
+interface IndexProps {
+  onLogout?: () => void;
+}
+
+const Index = ({ onLogout }: IndexProps) => {
   const [activeView, setActiveView] = useState<'junction' | 'analytics'>('junction');
   const [selectedJunction, setSelectedJunction] = useState('main-park');
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  // Get current user info from localStorage
+  const getCurrentUser = () => {
+    const username = localStorage.getItem('currentUsername') || 'admin';
+    const userMap = {
+      'admin': { username: 'admin', password: 'admin123', name: 'System Administrator', email: 'admin@traffic.city', role: 'Administrator' },
+      'controller': { username: 'controller', password: 'control456', name: 'Traffic Controller', email: 'controller@traffic.city', role: 'System Operator' },
+      'operator': { username: 'operator', password: 'operate789', name: 'System Operator', email: 'operator@traffic.city', role: 'Operator' }
+    };
+    return userMap[username as keyof typeof userMap] || userMap.admin;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,7 +87,10 @@ const Index = () => {
               <Settings className="h-5 w-5" />
             </Button>
             
-            <ProfileDropdown />
+            <ProfileDropdown 
+              onLogout={onLogout} 
+              onProfileClick={() => setProfileOpen(true)}
+            />
           </div>
         </div>
 
@@ -130,6 +150,12 @@ const Index = () => {
       <SettingsModal
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
+      />
+
+      <ProfileModal
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        user={getCurrentUser()}
       />
 
       {/* Simulate Emergency for Demo */}
