@@ -106,9 +106,7 @@ const EmergencyAlert = ({
     return (
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogContent
-                className="w-screen h-screen max-w-none max-h-none overflow-hidden bg-card border-4 border-status-critical pulse-critical p-0 m-0 rounded-none"
-                onPointerDownOutside={(e) => e.preventDefault()}
-                onEscapeKeyDown={(e) => e.preventDefault()}
+                className="w-screen h-screen max-w-none max-h-none overflow-hidden bg-card border-4 border-status-critical p-0 m-0 rounded-none"
             >
                 <div className="h-full overflow-y-auto custom-scrollbar">
                     <DialogHeader className="text-center space-y-4 bg-card z-10 p-6 border-b border-status-critical/20 relative">
@@ -120,13 +118,13 @@ const EmergencyAlert = ({
                         >
                             <X className="h-6 w-6" />
                         </Button>
-                        <div className="mx-auto w-24 h-24 rounded-full bg-status-critical flex items-center justify-center animate-pulse">
+                        <div className="mx-auto w-24 h-24 rounded-full bg-status-critical flex items-center justify-center">
                             {getVehicleIcon()}
                         </div>
                         <DialogTitle className="text-2xl md:text-3xl font-bold text-status-critical flex items-center justify-center space-x-3 flex-wrap">
-                            <Siren className="h-6 w-6 md:h-8 md:w-8 animate-pulse" />
+                            <Siren className="h-6 w-6 md:h-8 md:w-8" />
                             <span className="text-center">EMERGENCY VEHICLE DETECTED</span>
-                            <Siren className="h-6 w-6 md:h-8 md:w-8 animate-pulse" />
+                            <Siren className="h-6 w-6 md:h-8 md:w-8" />
                         </DialogTitle>
                     </DialogHeader>
                     <div className="space-y-6 p-6">
@@ -147,7 +145,7 @@ const EmergencyAlert = ({
                                 {!protocolActive ? (
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-center space-x-2 flex-wrap">
-                                            <Clock className="h-5 w-5 text-status-warning animate-pulse" />
+                                            <Clock className="h-5 w-5 text-status-warning" />
                                             <span className="text-base md:text-lg text-status-warning text-center">
                         Activating Green Corridor Protocol in
                       </span>
@@ -162,7 +160,7 @@ const EmergencyAlert = ({
                                 ) : (
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-center space-x-2 flex-wrap">
-                                            <CheckCircle className="h-6 w-6 text-status-online animate-pulse" />
+                                            <CheckCircle className="h-6 w-6 text-status-online" />
                                             <span className="text-base md:text-lg text-status-online font-semibold text-center">
                         GREEN CORRIDOR PROTOCOL ACTIVE
                       </span>
@@ -214,9 +212,9 @@ const EmergencyAlert = ({
                                 <h4 className="font-semibold text-sm text-foreground">
                                     Emergency Protocol Steps:
                                 </h4>
-                                <div className="space-y-2 text-sm text-muted-foreground">
-                                    <div className="flex items-center space-x-2">
-                                        <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-status-warning animate-pulse'}`} />
+                                    <div className="space-y-2 text-sm text-muted-foreground">
+                                        <div className="flex items-center space-x-2">
+                                            <div className={`w-2 h-2 rounded-full ${ protocolActive ? 'bg-status-online' : 'bg-status-warning'}`} />
                                         <span>Traffic lights clearing emergency route</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
