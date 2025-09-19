@@ -12,9 +12,10 @@ import { User, Settings, LogOut, Shield, HelpCircle } from 'lucide-react';
 
 interface ProfileDropdownProps {
   onLogout?: () => void;
+  onProfileClick?: () => void;
 }
 
-const ProfileDropdown = ({ onLogout }: ProfileDropdownProps) => {
+const ProfileDropdown = ({ onLogout, onProfileClick }: ProfileDropdownProps) => {
   const [user] = useState({
     name: 'Traffic Controller',
     email: 'controller@traffic.city',
@@ -22,6 +23,7 @@ const ProfileDropdown = ({ onLogout }: ProfileDropdownProps) => {
   });
 
   const handleLogout = () => {
+    localStorage.removeItem('currentUsername');
     if (onLogout) {
       onLogout();
     }
@@ -45,7 +47,7 @@ const ProfileDropdown = ({ onLogout }: ProfileDropdownProps) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={onProfileClick}>
           <User className="mr-2 h-4 w-4" />
           <span>Profile</span>
         </DropdownMenuItem>

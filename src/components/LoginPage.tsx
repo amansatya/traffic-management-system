@@ -71,8 +71,9 @@ const LoginPage = ({ onLogin, onBlock }: LoginPageProps) => {
       // Reset attempts on successful login
       localStorage.removeItem('loginAttempts');
       localStorage.removeItem('lastAttempt');
-      // Store auth state
+      // Store auth state and current user
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('currentUsername', username);
       onLogin();
     } else {
       const newAttempts = currentAttempts + 1;
@@ -147,11 +148,6 @@ const LoginPage = ({ onLogin, onBlock }: LoginPageProps) => {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Test Credentials:</p>
-            <p>admin/admin123 | controller/control456 | operator/operate789</p>
-          </div>
         </CardContent>
       </Card>
     </div>
