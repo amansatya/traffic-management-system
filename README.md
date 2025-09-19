@@ -153,16 +153,6 @@ Make sure you have the following installed on your system:
 
 ## 🔧 Usage
 
-### Authentication
-
-The system supports multiple user roles with different access levels:
-
-| Username | Password | Role | Description |
-|----------|----------|------|-------------|
-| `admin` | `admin123` | Administrator | Full system access and configuration |
-| `controller` | `control456` | Traffic Controller | Traffic control and monitoring |
-| `operator` | `operate789` | System Operator | Basic monitoring and reporting |
-
 ### Main Features
 
 1. **Junction Control**
@@ -338,11 +328,6 @@ The system implements a secure multi-user authentication system:
 3. Redirects to appropriate dashboard based on user role
 4. Session remains active until logout or timeout
 
-**Default Credentials:**
-- Admin: `admin` / `admin123`
-- Controller: `controller` / `control456`
-- Operator: `operator` / `operate789`
-
 ---
 
 ## 🤝 Contributing
@@ -373,6 +358,8 @@ If you find a bug or have a feature request:
 2. Create a detailed issue with steps to reproduce
 3. Include screenshots or videos if applicable
 4. Tag the issue appropriately
+5. Contributions, issues, and feature requests are welcome!  
+   Feel free to [open an issue](https://github.com/amansatya/traffic-management-system/issues) or submit a pull request.
 
 ---
 
@@ -390,12 +377,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **TailwindCSS** - For the utility-first CSS framework
 - **Vite** - For the fast development build tool
 - **Lucide React** - For the comprehensive icon set
-
----
-
-## 📢 Contributing
-
-Contributions, issues, and feature requests are welcome!  
-Feel free to [open an issue](https://github.com/amansatya/traffic-management-system/issues) or submit a pull request.
 
 ---
