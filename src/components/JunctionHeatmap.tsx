@@ -56,7 +56,7 @@ const JunctionHeatmap = () => {
             <div className="relative h-64 rounded-lg border border-border/50 overflow-hidden">
                 {/* Background Map Image */}
                 <img
-                    src="../../public/map.png"
+                    src="/map.png"
                     alt="City Map"
                     className="absolute inset-0 w-full h-full object-cover"
                 />
